@@ -54,7 +54,7 @@ public class WebsiteController implements WebsiteOperations{
     }
 
     @PatchMapping
-    public ResponseEntity<String> put(@RequestBody SubWebsitesUpdateRequest subWebsitesUpdateRequest) throws UserAuthenticationException {
+    public ResponseEntity<String> patch(@RequestBody SubWebsitesUpdateRequest subWebsitesUpdateRequest) throws UserAuthenticationException {
         Optional<UserId> userId = userService.authenticate(subWebsitesUpdateRequest.getCredentials());
         List<WebsiteId> websiteIds = subWebsitesUpdateRequest.websiteIds().stream().map(WebsiteId::new).toList();
         assert userId.isPresent();
