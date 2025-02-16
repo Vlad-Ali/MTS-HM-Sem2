@@ -41,5 +41,5 @@ public interface TopicOperations {
     @Operation(summary = "Установить выбранные темы для пользователя")
     @ApiResponse(responseCode = "200", description = "Выбранные темы обновлены")
     @PatchMapping
-    ResponseEntity<String> put(@Parameter(description = "Данные для обновления выбранных тем") @RequestBody SubTopicsUpdateRequest subTopicsUpdateRequest);
+    ResponseEntity<String> patch(@Parameter(description = "Данные для обновления выбранных тем") @RequestBody SubTopicsUpdateRequest subTopicsUpdateRequest);
 }
