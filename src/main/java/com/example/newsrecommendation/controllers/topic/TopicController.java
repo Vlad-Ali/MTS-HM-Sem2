@@ -71,7 +71,7 @@ public class TopicController implements TopicOperations{
     }
 
     @PatchMapping
-    public ResponseEntity<String> put(@RequestBody SubTopicsUpdateRequest topicsUpdateRequest) throws UserAuthenticationException{
+    public ResponseEntity<String> patch(@RequestBody SubTopicsUpdateRequest topicsUpdateRequest) throws UserAuthenticationException{
         Optional<UserId> userId = userService.authenticate(topicsUpdateRequest.gerCredentials());
         assert userId.isPresent();
         List<TopicId> topicIds = topicsUpdateRequest.topicIds().stream().map(TopicId::new).toList();
