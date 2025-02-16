@@ -43,5 +43,5 @@ public interface WebsiteOperations {
     @Operation(summary = "Установить выбранные сайты для пользователя")
     @ApiResponse(responseCode = "200", description = "Выбранные сайты обновлены")
     @PatchMapping
-    ResponseEntity<String> put(@Parameter(description = "Данные для обновления выбранных сайтов") @RequestBody SubWebsitesUpdateRequest subWebsitesUpdateRequest);
+    ResponseEntity<String> patch(@Parameter(description = "Данные для обновления выбранных сайтов") @RequestBody SubWebsitesUpdateRequest subWebsitesUpdateRequest);
 }
