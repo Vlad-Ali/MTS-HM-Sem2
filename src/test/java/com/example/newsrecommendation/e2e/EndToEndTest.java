@@ -1,6 +1,6 @@
 package com.example.newsrecommendation.e2e;
 
-import com.example.newsrecommendation.models.topic.Topic;
+import com.example.newsrecommendation.model.topic.Topic;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
