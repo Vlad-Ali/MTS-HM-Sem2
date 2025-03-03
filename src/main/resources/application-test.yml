@@ -1,0 +1,8 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: newName
+logging:
+  level:
+    com.example.newsrecommendation: DEBUG
