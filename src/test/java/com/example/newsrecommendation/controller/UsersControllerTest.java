@@ -23,7 +23,6 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -70,7 +69,6 @@ public class UsersControllerTest {
                 .andExpect(jsonPath("$.email").value(testInfo.email()))
                 .andExpect(jsonPath("$.username").value(testInfo.username()));
     }
-
     @Test
     public void shouldNotReturnUserOnGet() throws Exception{
         when(usersService.authenticate(any(AuthenticationCredentials.class))).thenThrow(new UserAuthenticationException(""));

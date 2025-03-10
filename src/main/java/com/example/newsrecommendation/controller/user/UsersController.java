@@ -26,6 +26,7 @@ public class UsersController implements UserOperations{
     private final UsersService usersService;
 
 
+
     public UsersController(UsersService usersService) {
         this.usersService = usersService;
     }
@@ -39,7 +40,6 @@ public class UsersController implements UserOperations{
     public ResponseEntity<UserInfo> get(@RequestBody AuthenticationCredentials credentials) throws UserAuthenticationException {
         Optional<UserId> userId = usersService.authenticate(credentials);
         User user = usersService.findById(userId.get());
-
         LOG.debug("User authenticated by email = {} and password = {}", credentials.email(), credentials.password());
         return ResponseEntity.ok(new UserInfo(user.email(),user.username()));
     }

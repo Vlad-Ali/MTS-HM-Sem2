@@ -11,6 +11,7 @@ import com.example.newsrecommendation.model.user.exception.UserAuthenticationExc
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+
 
 
 @RestController
@@ -44,6 +46,7 @@ public class ArticlesController implements ArticleOperations{
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
+
         List<ArticleInfo> articleInfos = new ArrayList<>();
         for(Article article : articles){
             String topicName = topicsService.findById(article.topicId()).description();
