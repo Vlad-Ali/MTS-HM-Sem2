@@ -1,6 +1,6 @@
-package com.example.newsrecommendation.model.website;
+package com.example.newsrecommendation.models.website;
 
-import com.example.newsrecommendation.model.user.UserId;
+import com.example.newsrecommendation.models.user.UserId;
 
 import java.util.Objects;
 

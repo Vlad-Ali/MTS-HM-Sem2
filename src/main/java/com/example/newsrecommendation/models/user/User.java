@@ -1,4 +1,4 @@
-package com.example.newsrecommendation.model.user;
+package com.example.newsrecommendation.models.user;
 
 import java.util.Objects;
 
@@ -34,5 +34,4 @@ public record User(UserId id, String email, String password, String username) {
     public int hashCode() {
         return Objects.hashCode(id);
     }
-
 }

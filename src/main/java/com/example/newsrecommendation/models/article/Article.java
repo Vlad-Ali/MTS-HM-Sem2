@@ -1,7 +1,8 @@
-package com.example.newsrecommendation.model.article;
+package com.example.newsrecommendation.models.article;
 
-import com.example.newsrecommendation.model.topic.TopicId;
-import com.example.newsrecommendation.model.website.WebsiteId;
+import com.example.newsrecommendation.models.topic.TopicId;
+import com.example.newsrecommendation.models.user.UserId;
+import com.example.newsrecommendation.models.website.WebsiteId;
 
 import java.sql.Timestamp;
 import java.util.Date;

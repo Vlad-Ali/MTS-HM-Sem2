@@ -6,11 +6,13 @@ import com.example.newsrecommendation.model.user.*;
 import com.example.newsrecommendation.model.user.exception.EmailConflictException;
 import com.example.newsrecommendation.model.user.exception.UserAuthenticationException;
 import com.example.newsrecommendation.security.SecurityConfig;
+
 import com.example.newsrecommendation.service.user.UsersService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.ContextConfiguration;
+
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -65,7 +67,7 @@ public class UsersControllerTest {
                 .andExpect(jsonPath("$.email").value(testInfo.email()))
                 .andExpect(jsonPath("$.username").value(testInfo.username()));
     }
-
+  
     @Test
     public void shouldNotReturnUserOnGet() throws Exception{
         when(usersService.authenticate(any(AuthenticationCredentials.class))).thenThrow(new UserAuthenticationException(""));
