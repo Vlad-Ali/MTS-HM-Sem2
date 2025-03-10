@@ -10,7 +10,14 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 
 @RequestMapping("/default")
 @Tag(name = "Topic Api", description = "Управление темами для пользователей")
@@ -29,7 +36,7 @@ public interface TopicOperations {
     @Operation(summary = "Удалить созданную пользователем тему")
     @ApiResponse(responseCode = "200", description = "Тема удалена")
     @DeleteMapping("/custom/{topicId}")
-    ResponseEntity<String> delete(@Parameter(description = "Реквизиты для входа пользователя") @RequestBody AuthenticationCredentials credentials,@Parameter(description = "ID созданной темы для удаления") @PathVariable Long topicId);
+    ResponseEntity<String> delete(@Parameter(description = "Реквизиты для входа пользователя") @RequestBody AuthenticationCredentials credentials, @Parameter(description = "ID созданной темы для удаления") @PathVariable Long topicId);
 
     @Operation(summary = "Получить все выбранные пользователем темы")
     @ApiResponse(responseCode = "200", description = "Темы получены")

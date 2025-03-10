@@ -11,11 +11,18 @@ import com.example.newsrecommendation.model.user.exception.UserAuthenticationExc
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+
 
 
 @RestController
@@ -33,7 +40,13 @@ public class ArticlesController implements ArticleOperations{
 
     public ResponseEntity<List<ArticleInfo>> getUserArticles(@RequestBody AuthenticationCredentials credentials) throws UserAuthenticationException {
         Optional<UserId> userId = usersService.authenticate(credentials);
-        List<Article> articles = articlesService.getUserArticles(userId.get());
+        List<Article> articles;
+        try {
+            articles = articlesService.getUserArticles(userId.get()).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
         List<ArticleInfo> articleInfos = new ArrayList<>();
         for(Article article : articles){
             String topicName = topicsService.findById(article.topicId()).description();

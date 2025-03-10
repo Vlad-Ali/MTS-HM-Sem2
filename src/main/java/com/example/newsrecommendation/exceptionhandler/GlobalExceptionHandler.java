@@ -2,6 +2,7 @@ package com.example.newsrecommendation.exceptionhandler;
 
 import com.example.newsrecommendation.model.topic.exception.TopicAlreadyExistsException;
 import com.example.newsrecommendation.model.topic.exception.TopicNotFoundException;
+import com.example.newsrecommendation.model.user.exception.CustomException;
 import com.example.newsrecommendation.model.user.exception.EmailConflictException;
 import com.example.newsrecommendation.model.user.exception.UserAuthenticationException;
 import com.example.newsrecommendation.model.user.exception.UserNotFoundException;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     private static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-
     @ApiResponse(responseCode = "400", description = "Такая почта уже существует")
     @ExceptionHandler(EmailConflictException.class)
     public ResponseEntity<String> handleEmailConflictException(EmailConflictException ex) {
@@ -64,6 +64,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserAuthenticationException.class)
     public ResponseEntity<String> handleUserAuthenticationException(UserAuthenticationException ex){
         LOG.warn("User not authenticated: {}", ex.getMessage());
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<String> handleCustomException(CustomException ex){
+        LOG.debug("Not correct");
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
 }

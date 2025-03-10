@@ -12,16 +12,21 @@ import com.example.newsrecommendation.model.user.AuthenticationCredentials;
 import com.example.newsrecommendation.model.user.UserId;
 import com.example.newsrecommendation.service.user.UsersService;
 import com.example.newsrecommendation.model.user.exception.UserAuthenticationException;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/topics")
+@CircuitBreaker(name = "apiCircuitBreaker")
 public class TopicsController implements TopicOperations{
     private static final Logger LOG = LoggerFactory.getLogger(TopicsController.class);
     private final TopicsService topicService;

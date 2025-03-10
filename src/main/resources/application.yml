@@ -1,6 +1,11 @@
 spring:
   application:
     name: newsrecommendation
+server:
+  tomcat:
+    threads:
+      max: 200
+      min: 10
 logging:
   level:
     com.example.newsrecommendation.controller: DEBUG
@@ -16,3 +21,17 @@ management:
       exposure:
         include: "*"
         exclude: shutdown
+  resilience4j.ratelimiter:
+    instances:
+      apiRateLimiter:
+        limitForPeriod: 5
+        limitRefreshPeriod: 5s
+        timeoutDuration: 0
+  resilience4j.circuitbreaker:
+    instances:
+      failure-rate-threshold: 50
+      wait-duration-in-open-state: 10s
+      permitted-number-of-calls-in-half=open-state: 3
+      sliding-window-type: count_based
+      sliding-window-size: 10
+

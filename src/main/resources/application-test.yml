@@ -3,3 +3,6 @@ server:
 spring:
   application:
     name: newName
+logging:
+  level:
+    com.example.newsrecommendation: DEBUG

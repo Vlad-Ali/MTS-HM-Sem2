@@ -8,7 +8,10 @@ import com.example.newsrecommendation.model.user.exception.UserAuthenticationExc
 import com.example.newsrecommendation.model.user.exception.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.reactive.function.client.WebClientCustomizer;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +22,8 @@ import java.util.Optional;
 public class InMemoryUsersRepository implements UsersRepository {
     List<User> userList = new ArrayList<>(List.of(User.USER_1, User.USER_2, User.USER_3));
     private static final Logger LOG = LoggerFactory.getLogger(InMemoryUsersRepository.class);
-
+    private final RestTemplate restTemplate = new RestTemplate();
+    private final WebClient webClient = WebClient.create();
     @Override
     public User findById(UserId userId) {
         LOG.debug("Method findById called");
@@ -28,6 +32,7 @@ public class InMemoryUsersRepository implements UsersRepository {
                 return user;
             }
         }
+        String response = restTemplate.getForObject("http://localhost:8080/api/sync", String.class);
         throw new UserNotFoundException("User is not found with id = " + userId.getValue());
     }
 
@@ -39,6 +44,10 @@ public class InMemoryUsersRepository implements UsersRepository {
                 throw new EmailConflictException("Email is already used");
             }
         }
+        String response = webClient.get().uri("http://localhost:8080/api/sync")
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
         return userList.get(1);
     }
 

@@ -3,10 +3,13 @@ package com.example.newsrecommendation.service.user;
 import com.example.newsrecommendation.model.user.AuthenticationCredentials;
 import com.example.newsrecommendation.model.user.User;
 import com.example.newsrecommendation.model.user.UserId;
+import com.example.newsrecommendation.model.user.exception.CustomException;
 import com.example.newsrecommendation.repository.user.InMemoryUsersRepository;
 import com.example.newsrecommendation.repository.user.UsersRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -25,6 +28,8 @@ public class UsersService {
         return usersRepository.findById(userId);
     }
 
+    //At least once
+    @Retryable(retryFor = CustomException.class, maxAttempts = 5, backoff = @Backoff(delay = 10000))
     public User register(User user){
         LOG.debug("Method register called");
         return usersRepository.create(user);

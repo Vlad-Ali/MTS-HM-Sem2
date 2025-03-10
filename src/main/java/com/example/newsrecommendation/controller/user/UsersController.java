@@ -7,25 +7,30 @@ import com.example.newsrecommendation.model.user.request.UserChangePasswordReque
 import com.example.newsrecommendation.model.user.request.UserRegisterRequest;
 import com.example.newsrecommendation.model.user.request.UserUpdateRequest;
 import com.example.newsrecommendation.service.user.UsersService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
+@RateLimiter(name = "apiRateLimiter")
 public class UsersController implements UserOperations{
     private static final Logger LOG = LoggerFactory.getLogger(UsersController.class);
     private final UsersService usersService;
+
+
 
     public UsersController(UsersService usersService) {
         this.usersService = usersService;
     }
 
-    @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody UserRegisterRequest userRegisterRequest) throws EmailConflictException {
         User user = usersService.register(new User(new UserId(null), userRegisterRequest.email(), userRegisterRequest.password(), userRegisterRequest.username()));
         LOG.debug("User is registered");

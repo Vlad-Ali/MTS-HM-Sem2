@@ -12,10 +12,16 @@ import com.example.newsrecommendation.model.website.exception.WebsiteNotFoundExc
 import com.example.newsrecommendation.model.website.request.CustomWebsiteCreateRequest;
 import com.example.newsrecommendation.model.website.request.SubWebsitesUpdateRequest;
 import com.example.newsrecommendation.model.website.response.WebsitesResponse;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +29,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/websites")
+@CircuitBreaker(name = "apiCircuitBreaker")
+@RateLimiter(name = "apiRateLimiter")
 public class WebsitesController implements WebsiteOperations{
     private final WebsitesService websitesService;
     private final UsersService usersService;
@@ -34,7 +42,7 @@ public class WebsitesController implements WebsiteOperations{
     }
 
     public ResponseEntity<Website> get(@PathVariable Long id) throws WebsiteNotFoundException {
-        Website website = websitesService.findById(new WebsiteId(id));
+        Website website = websitesService.findById(id);
         LOG.debug("Website found by id = {}",id);
         return ResponseEntity.ok(website);
     }

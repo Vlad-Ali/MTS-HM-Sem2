@@ -2,8 +2,6 @@ package com.example.newsrecommendation.model.website;
 
 import com.example.newsrecommendation.model.user.UserId;
 
-import java.util.Objects;
-
 public record Website(WebsiteId id, String url, String description, UserId creatorId) {
     public static final Website WEBSITE_1 = new Website(new WebsiteId(1L), "1", "1", new UserId(1L));
     public static final Website WEBSITE_2 = new Website(new WebsiteId(2L), "2", "2", new UserId(2L));
@@ -23,24 +21,6 @@ public record Website(WebsiteId id, String url, String description, UserId creat
 
     public Website withCreatorId(UserId newCreatorId) {
         return new Website(id, url, description, newCreatorId);
-    }
-
-    @Override
-    public boolean equals(final Object object) {
-        if (this == object) {
-            return true;
-        }
-
-        if (!(object instanceof Website website)) {
-            return false;
-        }
-
-        return id != null && id.equals(website.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
     }
 
 }

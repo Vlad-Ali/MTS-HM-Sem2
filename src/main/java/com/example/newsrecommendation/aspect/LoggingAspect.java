@@ -3,6 +3,7 @@ package com.example.newsrecommendation.aspect;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -19,9 +20,17 @@ public class LoggingAspect {
 
     private static final Logger log = LoggerFactory.getLogger(LoggingAspect.class);
 
+    public static int counter = 0;
     @Before("execution(* com.example.newsrecommendation.controller.*.*.*( .. ))")
     public void logBefore(JoinPoint joinPoint){
+        ++counter;
         log.debug("Before calling method: {}", joinPoint.getSignature().getName());
+    }
+
+    @After("execution(* com.example.newsrecommendation.controller.*.*.*( .. ))")
+    public void logAfter(JoinPoint joinPoint){
+        ++counter;
+        log.debug("After calling method: {}", joinPoint.getSignature().getName());
     }
 
     @Around("execution(* com.example.newsrecommendation.controller.*.*.*( .. ))")

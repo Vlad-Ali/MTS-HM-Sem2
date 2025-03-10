@@ -5,7 +5,6 @@ import com.example.newsrecommendation.model.website.WebsiteId;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.Objects;
 
 public record Article(ArticleId id, String title, String url, Timestamp createdAt, TopicId topicId, WebsiteId websiteId) {
     public static final Article ARTICLE_1 = new Article(new ArticleId(1L), "1","1", new Timestamp(new Date().getTime()), new TopicId(1L), new WebsiteId(1L));
@@ -34,17 +33,4 @@ public record Article(ArticleId id, String title, String url, Timestamp createdA
         return new Article(id, title, url, createdAt, topicId, newWebsiteId);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        final Article article = (Article) o;
-        return id != null && id.equals(article.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }
