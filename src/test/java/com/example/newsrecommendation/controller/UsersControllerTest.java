@@ -1,13 +1,18 @@
 package com.example.newsrecommendation.controller;
 
+import com.example.newsrecommendation.NewsRecommendationApplication;
 import com.example.newsrecommendation.controller.user.UsersController;
 import com.example.newsrecommendation.model.user.*;
 import com.example.newsrecommendation.model.user.exception.EmailConflictException;
 import com.example.newsrecommendation.model.user.exception.UserAuthenticationException;
+import com.example.newsrecommendation.security.SecurityConfig;
+
 import com.example.newsrecommendation.service.user.UsersService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.context.ContextConfiguration;
+
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -21,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UsersController.class)
+@ContextConfiguration(classes = {NewsRecommendationApplication.class, SecurityConfig.class})
 public class UsersControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -34,7 +40,7 @@ public class UsersControllerTest {
     private static final String USER_CHANGE_PASSWORD = "{\"email\":\"2\", \"password\":\"2\", \"newPassword\":\"2\"}";
     private final User testUser = User.USER_2;
     @Test
-    public void should201OnRegister() throws Exception {
+    public void shouldRegisterUser() throws Exception {
         when(usersService.register(any(User.class))).thenReturn(testUser);
         mockMvc.perform(post("/api/user/register").contentType("application/json").content(USER_REGISTER))
                 .andExpect(status().isCreated())
@@ -45,14 +51,14 @@ public class UsersControllerTest {
     }
 
     @Test
-    public void should400OnRegister() throws Exception{
+    public void shouldNotRegisterUser() throws Exception{
         when(usersService.register(any(User.class))).thenThrow(new EmailConflictException("email is already used"));
         mockMvc.perform(post("/api/user/register").contentType("application/json").content(USER_REGISTER))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void should200OnGetUser() throws Exception {
+    public void shouldReturnUserOnGet() throws Exception {
         UserInfo testInfo = new UserInfo(testUser.email(), testUser.username());
         when(usersService.authenticate(any(AuthenticationCredentials.class))).thenReturn(Optional.of(new UserId(2L)));
         when(usersService.findById(any(UserId.class))).thenReturn(testUser);
@@ -61,16 +67,16 @@ public class UsersControllerTest {
                 .andExpect(jsonPath("$.email").value(testInfo.email()))
                 .andExpect(jsonPath("$.username").value(testInfo.username()));
     }
-
+  
     @Test
-    public void should400OnGetUser() throws Exception{
+    public void shouldNotReturnUserOnGet() throws Exception{
         when(usersService.authenticate(any(AuthenticationCredentials.class))).thenThrow(new UserAuthenticationException(""));
         mockMvc.perform(get("/api/user").contentType("application/json").content(USER_AUTHENTICATE))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void should200OnUpdateUser() throws Exception {
+    public void shouldUpdateUser() throws Exception {
         when(usersService.authenticate(any(AuthenticationCredentials.class))).thenReturn(Optional.of(new UserId(2L)));
         doNothing().when(usersService).update(any(UserId.class), any(String.class), any(String.class));
         mockMvc.perform(patch("/api/user").contentType("application/json").content(USER_UPDATE))
@@ -78,14 +84,14 @@ public class UsersControllerTest {
     }
 
     @Test
-    public void should400OnUpdateUser() throws Exception {
+    public void shouldNotUpdateUser() throws Exception {
         when(usersService.authenticate(any(AuthenticationCredentials.class))).thenThrow(new UserAuthenticationException(""));
         mockMvc.perform(patch("/api/user").contentType("application/json").content(USER_UPDATE))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void should200OnChangePassword() throws Exception {
+    public void shouldChangePassword() throws Exception {
         when(usersService.authenticate(any(AuthenticationCredentials.class))).thenReturn(Optional.of(new UserId(2L)));
         doNothing().when(usersService).changePassword(any(UserId.class), any(String.class));
         mockMvc.perform(put("/api/user/password").contentType("application/json").content(USER_CHANGE_PASSWORD))
@@ -93,7 +99,7 @@ public class UsersControllerTest {
     }
 
     @Test
-    public void should400OnChangePassword() throws Exception {
+    public void shouldNotChangePassword() throws Exception {
         when(usersService.authenticate(any(AuthenticationCredentials.class))).thenThrow(new UserAuthenticationException(""));
         mockMvc.perform(put("/api/user/password").contentType("application/json").content(USER_CHANGE_PASSWORD))
                 .andExpect(status().isBadRequest());

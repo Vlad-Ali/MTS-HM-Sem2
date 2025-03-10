@@ -27,7 +27,7 @@ public class EndToEndTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    public void should200OnGetUserArticles(){
+    public void shouldReturnTopicOnGet(){
         Topic testTopic = Topic.TOPIC_1;
         ResponseEntity<Topic> response = restTemplate.exchange("http://localhost:"+port+"/api/topics/"+testTopic.id().getValue(),HttpMethod.GET,HttpEntity.EMPTY, Topic.class);
         assertEquals(200, response.getStatusCode().value());
