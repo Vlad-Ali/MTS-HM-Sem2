@@ -5,5 +5,5 @@ import lombok.Data;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.UUID;
-@Data
+
 public record UserAuditInfo(UUID userId, Instant eventTime, String eventType, String eventDetails) {}
